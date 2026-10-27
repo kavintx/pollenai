@@ -1,0 +1,204 @@
+@import "tailwindcss";
+
+@theme {
+  /* Pollen palette — yellow + black (token names kept from the old palette so /terms re-skins too) */
+  --color-lime: #ffde59; /* Pollen yellow (site background) */
+  --color-lime-2: #ffe98a;
+  --color-butter: #fff4c2;
+  --color-cream: #fff8dc;
+  --color-leaf: #1a1a1a;
+  --color-mint: #fff8dc;
+  --color-forest: #1a1a1a; /* buttons, dark blocks */
+  --color-ink: #1a1a1a;
+  --color-ink-2: #1a1a1a;
+  --color-moss: #3d3a30;
+  --color-moss-2: #5a5545;
+
+  --color-background: #ffde59;
+  --color-foreground: #1a1a1a;
+  --color-primary-foreground: #ffde59;
+  --color-ring: #1a1a1a;
+
+  /* Rainbow button (still used by components/ui/rainbow-button) */
+  --color-color-1: hsl(var(--color-1));
+  --color-color-2: hsl(var(--color-2));
+  --color-color-3: hsl(var(--color-3));
+  --color-color-4: hsl(var(--color-4));
+  --color-color-5: hsl(var(--color-5));
+  --animate-rainbow: rainbow var(--speed, 2s) infinite linear;
+  @keyframes rainbow {
+    0% { background-position: 0%; }
+    100% { background-position: 200%; }
+  }
+
+  --font-display: var(--font-fredoka), system-ui, sans-serif;
+  --font-sans: var(--font-nunito), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  --animate-rise: rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+:root {
+  --color-1: 0 100% 63%;
+  --color-2: 270 100% 63%;
+  --color-3: 210 100% 63%;
+  --color-4: 195 100% 63%;
+  --color-5: 90 100% 63%;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; overflow-x: clip; }
+  body {
+    background: var(--color-lime);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--color-ink); color: var(--color-lime); }
+  :focus-visible { outline: 3px solid var(--color-ink); outline-offset: 3px; }
+}
+
+/* Custom pieces live in the components layer so Tailwind utilities can still override them. */
+@layer components {
+/* ---------------------------------------------------------------- shared look */
+
+.sticker { border: 2px solid #1a1a1a; box-shadow: 5px 5px 0 #1a1a1a; }
+
+/* ------------------------------------------------------------------ buttons */
+
+.btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition:
+    transform 0.28s cubic-bezier(0.34, 1.9, 0.5, 1),
+    box-shadow 0.28s cubic-bezier(0.34, 1.9, 0.5, 1);
+}
+.btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -90%;
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+  transform: skewX(-20deg);
+  transition: left 0.65s ease;
+  pointer-events: none;
+}
+.btn:hover { transform: translate(-3px, -5px) rotate(-2deg) scale(1.05) !important; box-shadow: 7px 9px 0 #1a1a1a !important; }
+.btn:hover::after { left: 140%; }
+.btn:active { transform: translate(2px, 2px) scale(0.96) !important; box-shadow: 0 0 0 #1a1a1a !important; transition-duration: 0.08s; }
+.btn:disabled { cursor: progress; }
+.btn-on-dark:hover { box-shadow: 7px 9px 0 #ffde59 !important; }
+
+.ar { display: inline-block; transition: transform 0.3s cubic-bezier(0.34, 1.9, 0.5, 1); }
+.btn:hover .ar { transform: translateX(7px); }
+
+.hb { display: inline-block; animation: hb 1.2s ease-in-out infinite; }
+@keyframes hb {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.35); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.22); }
+  60% { transform: scale(1); }
+}
+
+.wig { animation: wig 3.4s ease-in-out infinite; }
+@keyframes wig {
+  0%, 80%, 100% { transform: rotate(0); }
+  84% { transform: rotate(-5deg) scale(1.06); }
+  88% { transform: rotate(5deg) scale(1.06); }
+  92% { transform: rotate(-3deg); }
+  96% { transform: rotate(2deg); }
+}
+
+.pulse { animation: pulse-ring 1.8s ease-out infinite; }
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(26, 26, 26, 0.5); }
+  100% { box-shadow: 0 0 0 20px rgba(26, 26, 26, 0); }
+}
+
+/* ---------------------------------------------------------------- nav links */
+
+.nl { position: relative; display: inline-block; text-decoration: none; transition: transform 0.25s cubic-bezier(0.34, 1.9, 0.5, 1); }
+.nl::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 3px;
+  border-radius: 3px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(0.34, 1.6, 0.5, 1);
+}
+.nl:hover { transform: translateY(-3px) rotate(-2deg); }
+.nl:hover::after { transform: scaleX(1); }
+
+.lg svg { transition: transform 0.6s cubic-bezier(0.34, 1.6, 0.5, 1); }
+.lg:hover svg { transform: rotate(144deg) scale(1.15); }
+
+/* -------------------------------------------------------------------- cards */
+
+.lift { transition: transform 0.32s cubic-bezier(0.34, 1.7, 0.5, 1), box-shadow 0.32s cubic-bezier(0.34, 1.7, 0.5, 1); }
+.lift:hover { transform: translate(-3px, -6px) rotate(-1deg) !important; box-shadow: 9px 11px 0 #1a1a1a !important; }
+.lift-on-dark:hover { box-shadow: 9px 11px 0 #ffde59 !important; }
+
+/* -------------------------------------------------------------------- decor */
+
+.tw { animation: tw 2.2s ease-in-out infinite; }
+@keyframes tw {
+  0%, 100% { transform: scale(1) rotate(0); }
+  50% { transform: scale(0.55) rotate(45deg); opacity: 0.55; }
+}
+.bob { animation: bob 4s ease-in-out infinite; }
+@keyframes bob {
+  0%, 100% { transform: rotate(3deg) translateY(0); }
+  50% { transform: rotate(1deg) translateY(-14px); }
+}
+.spin { display: inline-block; animation: spin 9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.mq { display: flex; width: max-content; animation: mq 22s linear infinite; }
+@keyframes mq { to { transform: translateX(-50%); } }
+}
+
+/* ------------------------------------------------ polaroid carousel → Pollen */
+
+.pl-root .pl-title { font: 700 clamp(20px, 2.4vw, 26px) / 1.1 var(--font-display); letter-spacing: -0.01em; }
+.pl-root .pl-note { font: 800 15px / 1.1 var(--font-sans); color: var(--color-ink); }
+.pl-root .pl-sub { font: 600 14px / 1.4 var(--font-sans); }
+.pl-root .pl-btn {
+  width: 48px;
+  height: 48px;
+  border: 2px solid #1a1a1a;
+  background: #fff;
+  box-shadow: 3px 3px 0 #1a1a1a;
+  transition: transform 0.28s cubic-bezier(0.34, 1.9, 0.5, 1), background 0.2s, color 0.2s;
+}
+.pl-root .pl-btn:hover { background: #1a1a1a; color: #ffde59; transform: translateY(-3px) scale(1.08); }
+
+/* ------------------------------------- honeycomb background (honeycomb-bg.tsx) */
+
+
+/* ------------------------------------------- scroll reveal (scroll-reveal.tsx) */
+
+.rv {
+  opacity: 0;
+  transform: translate3d(0, 32px, 0) scale(0.985);
+  transition:
+    opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--rv-delay, 0ms);
+}
+.rv.rv-in { opacity: 1; transform: none; }

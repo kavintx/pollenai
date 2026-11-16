@@ -1,6 +1,9 @@
 /* Pollen Applied AI Hackathon — extends site.css. */
 
 .hk-page ::selection{background:var(--pollen);color:var(--ink)}
+.hk-page .menu__top{gap:8px;align-items:center}
+.hk-back{text-decoration:none}
+.hk-back svg{flex-shrink:0}
 .hk-progress{position:fixed;left:0;top:0;right:0;height:3px;z-index:70;pointer-events:none}
 .hk-progress span{display:block;height:100%;background:var(--pollen);transform:scaleX(0);transform-origin:left center;box-shadow:0 0 14px rgba(255,210,51,.65)}
 .hk-brand-tag{display:inline-block;margin-left:7px;padding:4px 7px;border-radius:999px;background:var(--ink);color:var(--pollen);font-family:var(--sans);font-size:8px;font-weight:600;letter-spacing:.09em;line-height:1;transform:translateY(-8px)}
